@@ -5,8 +5,8 @@ import mergedResolvers from "./resolvers/index.js";
 import mergedTypeDefs from "./typeDefs/index.js";
 
 const server = new ApolloServer({
-  typeDefs: mergedResolvers,
-  resolvers: mergedTypeDefs,
+  typeDefs: mergedTypeDefs,
+  resolvers: mergedResolvers,
 });
 
 const { url } = await startStandaloneServer(server);
