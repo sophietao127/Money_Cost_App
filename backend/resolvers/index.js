@@ -1,8 +1,17 @@
-// merge all resolvers
+// // merge all resolvers
+// import { mergeResolvers } from "@graphql-tools/merge";
+
+// import userResolver from "./user.resolver";
+// import transactionResolver from "./transaction.resolver";
+
+// const mergedResolvers = mergeResolvers([userResolver, transactionResolver]);
+
+// export default mergedResolvers;
+
 import { mergeResolvers } from "@graphql-tools/merge";
 
-import userResolver from "./user.resolver";
-import transactionResolver from "./transaction.resolver";
+import userResolver from "./user.resolver.js";
+import transactionResolver from "./transaction.resolver.js";
 
 const mergedResolvers = mergeResolvers([userResolver, transactionResolver]);
 
