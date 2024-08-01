@@ -1,0 +1,6 @@
+IP address (73.158.4.138)
+Username: sophietao127
+Password: sPza0rgsexCqAhZa
+
+Connection string:
+mongodb+srv://sophietao127:<password>@cluster0.hmvwgrl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
