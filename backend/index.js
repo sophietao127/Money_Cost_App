@@ -3,6 +3,10 @@ import http from "http";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import passport from "passport";
+import session from "express-session";
+import connectMongo from "connect-mongodb-session";
+
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
@@ -18,6 +22,33 @@ dotenv.config();
 const app = express();
 
 const httpServer = http.createServer(app);
+
+// create session store
+const MondoDBStore = connectMongo(session);
+
+const store = new MondoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: "session",
+});
+
+// for debug process
+store.on("error", (err) => console.log(err));
+
+// add session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false, // this option specifies whether to save the session to the store on every request
+    saveUninitialized: false, // option specifies whether to save unintiated sessions
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true, // this option prevents the Cross-Site Scripting (XSS) attacks
+    },
+    store: store,
+  })
+);
+
+// initialize passport
 
 const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
