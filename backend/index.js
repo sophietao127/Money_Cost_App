@@ -11,12 +11,16 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
+import { GraphQLLocalStrategy, buildContext } from "graphql-passport";
+
 import mergedResolvers from "./resolvers/index.js";
 import mergedTypeDefs from "./typeDefs/index.js";
 
 import { connectDB } from "./db/connectDB.js";
+import { configurePassport } from "./passport/passport.config.js";
 
 dotenv.config();
+configurePassport(); // initialize the passport
 
 // Required logic for integrating with Express
 const app = express();
@@ -49,6 +53,9 @@ app.use(
 );
 
 // initialize passport
+app.use(passport.initialize());
+// initalize session for session management
+app.use(passport.session());
 
 const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
@@ -63,13 +70,17 @@ await server.start();
 // and our expressMiddleware function.
 app.use(
   "/",
-  cors(),
+  cors({
+    origin: "http://localhost:3000",
+    // it allows us to send the cookies alongside the request
+    credentials: true,
+  }),
   express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     // context: async ({ req }) => ({ token: req.headers.token }),
-    context: async ({ req }) => ({ req }),
+    context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
 
