@@ -1,7 +1,14 @@
+import { Route, Routes } from "react-router-dom";
 function App() {
   return (
     <>
-      <h1 className="text-red-500 text-5xl bg-blue-300">Hello</h1>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/transaction/:id" element={<TransactionPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </>
   );
 }
