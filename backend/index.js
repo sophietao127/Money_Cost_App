@@ -32,7 +32,7 @@ const MondoDBStore = connectMongo(session);
 
 const store = new MondoDBStore({
   uri: process.env.MONGO_URI,
-  collection: "session",
+  collection: "sessions",
 });
 
 // for debug process
