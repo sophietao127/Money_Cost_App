@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs"; // use for hash the passport
 import User from "../models/user.model.js";
 import { GraphQLLocalStrategy } from "graphql-passport";
 
+// done(err_message, return_results)
 export const configurePassport = async () => {
   passport.serializeUser((user, done) => {
     console.log("Serializing User");
@@ -22,12 +23,15 @@ export const configurePassport = async () => {
 
   // reference to: https://www.npmjs.com/package/graphql-passport
   passport.use(
+    // login function
     new GraphQLLocalStrategy(async (username, password, done) => {
       try {
+        // get the user in the database
         const user = await User.findOne({ username });
         if (!user) {
           throw new Error("Invalid username or password");
         }
+        // check if the password is invalid
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
           throw new Error("Invalid username or password");

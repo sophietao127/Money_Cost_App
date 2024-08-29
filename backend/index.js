@@ -38,7 +38,7 @@ const store = new MondoDBStore({
 // for debug process
 store.on("error", (err) => console.log(err));
 
-// add session middleware
+// add session middleware, pass the session to the store
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
