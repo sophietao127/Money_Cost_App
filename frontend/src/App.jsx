@@ -5,12 +5,18 @@ import NotFoundPage from "./pages/NotFoundPage";
 import SignUpPage from "./pages/SignUpPage";
 import TransactionPage from "./pages/TransactionPage";
 import Header from "./components/ui/Header";
+import { useQuery } from "@apollo/client";
+import { GET_AUTHENTICATED_USER } from "./graphql/queries/user.query";
 
 function App() {
-  const authUser = true;
+  // const authUser = true;
+  const { loading, data, error } = useQuery(GET_AUTHENTICATED_USER);
+  console.log("loading: ", loading);
+  console.log("Authenticated User: ", data);
+  console.log("Error: ", error);
   return (
     <>
-      {authUser && <Header />}
+      {data?.authUser && <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />

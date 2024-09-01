@@ -75,6 +75,8 @@ const userResolver = {
     // users: (_, _, { req, res }) => {
     //   return users;
     // },
+
+    // check the user is authenticated or not
     authUser: async (_, __, context) => {
       try {
         const user = await context.getUser();
