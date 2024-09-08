@@ -17,7 +17,7 @@ const categoryColorMap = {
 const Card = ({ transaction }) => {
   let { category, amount, location, date, paymentType, description } =
     transaction;
-  const cardClass = categoryColorMap[category];
+  const cardClass = categoryColorMap[category]; // add background color
   // Capitalize the first letter of the description
   description = description[0]?.toUpperCase() + description.slice(1);
   category = category[0]?.toUpperCase() + category.slice(1);
@@ -28,7 +28,7 @@ const Card = ({ transaction }) => {
     <div className={`rounded-md p-4 bg-gradient-to-br ${cardClass}`}>
       <div className="flex flex-col gap-3">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="text-lg font-bold text-white">Saving</h2>
+          <h2 className="text-lg font-bold text-white">{category}</h2>
           <div className="flex items-center gap-2">
             <FaTrash className={"cursor-pointer"} />
             <Link to={`/transaction/123`}>
