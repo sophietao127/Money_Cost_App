@@ -5,6 +5,7 @@ import { FaSackDollar } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/formatDate";
 
 const categoryColorMap = {
   saving: "from-green-700 to-green-400",
@@ -13,8 +14,15 @@ const categoryColorMap = {
   // Add more categories and corresponding color classes as needed
 };
 
-const Card = ({ cardType }) => {
-  const cardClass = categoryColorMap[cardType];
+const Card = ({ transaction }) => {
+  let { category, amount, location, date, paymentType, description } =
+    transaction;
+  const cardClass = categoryColorMap[category];
+  // Capitalize the first letter of the description
+  description = description[0]?.toUpperCase() + description.slice(1);
+  category = category[0]?.toUpperCase() + category.slice(1);
+  paymentType = paymentType[0]?.toUpperCase() + paymentType.slice(1);
+  const formattedDate = formatDate(date);
 
   return (
     <div className={`rounded-md p-4 bg-gradient-to-br ${cardClass}`}>
@@ -30,22 +38,22 @@ const Card = ({ cardType }) => {
         </div>
         <p className="text-white flex items-center gap-1">
           <BsCardText />
-          Description: Salary
+          Description: {description}
         </p>
         <p className="text-white flex items-center gap-1">
           <MdOutlinePayments />
-          Payment Type: Cash
+          Payment Type: {paymentType}
         </p>
         <p className="text-white flex items-center gap-1">
           <FaSackDollar />
-          Amount: $150
+          Amount: ${amount}
         </p>
         <p className="text-white flex items-center gap-1">
           <FaLocationDot />
-          Location: New York
+          Location: {location || "N/A"}
         </p>
         <div className="flex justify-between items-center">
-          <p className="text-xs text-black font-bold">21 Sep, 2001</p>
+          <p className="text-xs text-black font-bold">{formattedDate}</p>
           <img
             src={"https://tecdn.b-cdn.net/img/new/avatars/2.webp"}
             className="h-8 w-8 border rounded-full"
