@@ -1,4 +1,5 @@
 import Transaction from "../models/transaction.model.js";
+import User from "../models/user.model.js";
 
 const transactionResolver = {
   // take a look at the schema: transaction.typeDef.js
@@ -109,19 +110,21 @@ const transactionResolver = {
     },
   },
 
-  // Add Transaction/user relationship
-  // Transaction: {
-  //   user: async (parent) => {
-  //     const userId = parent.userId;
-  //     try {
-  //       const user = await User.findById(userId);
-  //       return user;
-  //     } catch (err) {
-  //       console.error("Error getting user:", err);
-  //       throw new Error("Error getting user");
-  //     }
-  //   },
-  // },
+  // TODO: Add Transaction/user relationship (not really need now)
+  Transaction: {
+    user: async (parent) => {
+      // parent._id is the transaction id
+      // parent.userId is the user id
+      const userId = parent.userId;
+      try {
+        const user = await User.findById(userId);
+        return user;
+      } catch (err) {
+        console.error("Error getting user:", err);
+        throw new Error("Error getting user");
+      }
+    },
+  },
 };
 
 export default transactionResolver;
