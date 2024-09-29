@@ -2,6 +2,7 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
 
 import passport from "passport";
 import session from "express-session";
@@ -21,6 +22,9 @@ import { configurePassport } from "./passport/passport.config.js";
 
 dotenv.config();
 configurePassport(); // initialize the passport
+
+// get the root of our application
+const __dirname = path.resolve();
 
 // Required logic for integrating with Express
 const app = express();
@@ -83,6 +87,14 @@ app.use(
     context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
+
+// Deploy - npm run build in frontend
+// render.com => backend and frontend under the same domain name, localhost:4000
+app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist", "index.html"));
+});
 
 // Modified server startup
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
